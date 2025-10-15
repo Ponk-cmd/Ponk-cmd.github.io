@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Grid Master Countdown</title>
+
+  <style>
+    @font-face {
+      font-family: 'runescape';
+      src: url('fonts/runescape.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background: url("https://oldschool.runescape.wiki/images/Old_School_RuneScape_world_map.png?e7fcb") 
+                  center center / cover no-repeat fixed;
+      color: #ffff00;
+      font-family: 'runescape', serif;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      backdrop-filter: brightness(0.9);
+    }
+
+    .logo {
+      width: 300px;
+      max-width: 85%;
+      margin-bottom: 2rem;
+      filter: drop-shadow(0 0 20px rgba(0,0,0,0.7));
+      image-rendering: crisp-edges;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      text-shadow: 
+        2px 2px 4px #000, 
+        0 0 20px rgba(255, 215, 0, 0.6);
+    }
+
+    #countdown {
+      font-size: 3.5rem;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+      text-shadow:
+        2px 2px 4px #000,
+        0 0 15px rgba(255, 215, 0, 0.4);
+    }
+
+    .label {
+      font-size: 1.2rem;
+      color: #e0c060;
+      margin-top: 0.5rem;
+      text-shadow: 1px 1px 3px #000;
+    }
+
+    .done {
+      font-size: 2rem;
+      color: #76ff03;
+      text-shadow:
+        2px 2px 4px #000,
+        0 0 20px rgba(118, 255, 3, 0.6);
+    }
+
+    .dropdown {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      display: inline-block;
+      z-index: 10;
+      font-size: 1rem;
+      text-shadow: 1px 1px 3px #000;
+    }
+
+    .dropbtn {
+      background-color: rgba(30, 30, 30, 0.8);
+      color: #ffff00;
+      padding: 10px 16px;
+      font-family: 'runescape', serif;
+      border: 1px solid #ffff00;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .dropbtn:hover {
+      background-color: rgba(60, 60, 60, 0.9);
+    }
+
+    .dropdown-content {
+      opacity: 0;
+      visibility: hidden;
+      position: absolute;
+      right: 0;
+      background-color: rgba(20, 20, 20, 0.95);
+      min-width: 220px;
+      border: 1px solid #ffff00;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+      text-align: left;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .dropdown-content a {
+      color: #ffff00;
+      padding: 10px 14px;
+      text-decoration: none;
+      display: block;
+      transition: background-color 0.2s ease;
+    }
+
+    .dropdown-content a:hover {
+      background-color: rgba(255, 215, 0, 0.1);
+    }
+
+    .dropdown:hover .dropdown-content {
+      opacity: 1;
+      visibility: visible;
+    }
+  </style>
+</head>
+<body>
+  <div class="dropdown">
+    <button class="dropbtn">📜 Guides</button>
+    <div class="dropdown-content">
+      <a href="https://docs.google.com/spreadsheets/d/1Or4fR2gw-i8wukmXDSuy8KWU61ANylGS5-SaqCSJMHU/edit?gid=0#gid=0" target="_blank">EVScape’s Spreadsheet</a>
+      <a href="https://pastebin.com/CCxvER9p" target="_blank">Faux’s Route</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <img 
+      src="https://oldschool.runescape.wiki/images/Grid_Master_logo.png?c0f83" 
+      alt="Grid Master Logo" 
+      class="logo"
+    >
+    <h1>Grid Master Begins In</h1>
+    <div id="countdown">-- : -- : -- : --</div>
+    <div id="doneMessage" class="done" style="display:none;">
+      🎉 Grid Master is Live! 🎉
+    </div>
+  </div>
+
+  <script>
+    const target = new Date('2025-10-15T11:00:00Z');
+
+    const countdownEl = document.getElementById('countdown');
+    const doneEl = document.getElementById('doneMessage');
+
+    function updateCountdown() {
+      const now = new Date();
+      const diff = target - now;
+
+      if (diff <= 0) {
+        countdownEl.style.display = 'none';
+        doneEl.style.display = 'block';
+        return;
+      }
+
+      const secs = Math.floor((diff / 1000) % 60);
+      const mins = Math.floor((diff / (1000 * 60)) % 60);
+      const hrs = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+      function pad(n) { return n < 10 ? '0' + n : n; }
+
+      countdownEl.textContent =
+        pad(days) + ':' + pad(hrs) + ':' + pad(mins) + ':' + pad(secs);
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
